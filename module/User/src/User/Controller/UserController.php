@@ -1,0 +1,145 @@
+<?php
+namespace User\Controller;
+
+use User\Controller\AbstractRestfulController;
+use Zend\View\Model\JsonModel;
+
+class UserController extends AbstractRestfulJsonController{
+
+    protected $em;
+
+    public function getEntityManager(){
+        if (null === $this->em) {
+            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+        }
+        return $this->em;
+    }
+
+    public function indexAction(){
+        $users = $this->getEntityManager()->getRepository('User\Entity\User')->findAll();
+        
+        $users = array_map(function($user){
+            return $user->toArray();
+        }, $users);
+        return new JsonModel($users);
+    }
+	
+    public function getList(){   
+        // Action used for GET requests without resource Id
+        $users = $this->getEntityManager()->getRepository('User\Entity\User')->findAll();
+        $users = array_map(function($user){
+            return $user->toArray();
+        }, $users);
+        return new JsonModel($users);
+    }
+
+    public function get($id){   
+        // Action used for GET requests with resource Id
+        $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
+        return new JsonModel(
+    		$user->toArray()
+    	);
+    }
+
+    public function getMyUsersAction(){
+        return $this->getList();
+    }
+
+    public function create($data){
+        $this->getEntityManager();
+        $user = new \User\Entity\User($data);
+        $user->validate($this->em);
+        $user->setPassword($this->encriptPassword(
+                           $this->getStaticSalt(), 
+                           $user->getPassword()
+        ));
+        $user->setCreatedDate(date('Y-m-d'));
+        
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+        
+        return new JsonModel($user->toArray());
+    }
+
+    public function getStaticSalt() {
+        $staticSalt = '';
+        $config = $this->getServiceLocator()->get('Config');
+        $staticSalt = $config['static_salt'];       
+        return $staticSalt;
+    }
+
+    public function encriptPassword($staticSalt, $password) {
+        $password      = base64_encode( mcrypt_encrypt( MCRYPT_RIJNDAEL_256, md5( $staticSalt ), $password, MCRYPT_MODE_CBC, md5( md5( $staticSalt ) ) ) );
+        // return $password = md5($staticSalt . $password);
+        return $password;
+    }
+
+    public function update($id, $data){
+        // Action used for PUT requests
+        $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
+        $user->set($data);
+        $user->validate($this->em);
+        
+        $this->getEntityManager()->flush();
+        
+        return new JsonModel($user->toArray());
+    }
+
+    public function delete($id){
+        // Action used for DELETE requests
+        $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
+        $this->getEntityManager()->remove($user);
+        
+        $this->getEntityManager()->flush();
+        
+        return new JsonModel($user->toArray());
+    }
+
+    public function loginAction() {
+       $request = $this->getRequest();
+       $data = $this->getRequest()->getContent(); 
+        if ($request->isPost() && !empty($data)) {
+            $data = (!empty($data))? get_object_vars(json_decode($data)) : '';
+            $data = $this->commonLogin($data, true);
+
+            return new JsonModel($data);
+        }
+        $this->getResponse()->setStatusCode(400);
+        return new JsonModel();
+    }
+
+    function commonLogin($data, $has_encrypt) {
+        $authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+        $adapter = $authService->getAdapter();
+        $adapter->setIdentityValue($data['email']); 
+        if($has_encrypt)
+            $data['password'] = $this->encriptPassword($this->getStaticSalt(),  $data['password']);
+        $adapter->setCredentialValue($data['password']); 
+        $authResult = $authService->authenticate();
+        if ($authResult->isValid()) {
+           $identity = $authResult->getIdentity();
+           $sessionManager = new \Zend\Session\SessionManager();
+           $sessionManager->regenerateId();
+
+           $user = $identity->toArray();
+           unset($user['password']);
+           
+           return array('status'=>'ok', 'data' => $user);
+        } else {
+            // $this->getResponse()->setStatusCode(400);
+            return array('status'=> 'error','data'=>"Invalid Credentials");
+        }
+    }
+
+    public function logoutAction() {
+        $auth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
+        $auth->clearIdentity();
+        return new JsonModel(array('status'=>'successfully logged out'));
+    }
+
+    public function invalidAccessAction() {
+        $this->getResponse()->setStatusCode(401);
+        return new JsonModel();
+    }
+
+}
