@@ -38,7 +38,7 @@ class CategoryController extends AbstractRestfulJsonController{
 
     public function create($data){
         $this->getEntityManager();
-        $category = new \User\Entity\Category($data);
+        $category = new \Category\Entity\Category($data);
         $category->validate($this->em);
         
         $this->getEntityManager()->persist($category);

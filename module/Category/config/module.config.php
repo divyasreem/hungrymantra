@@ -16,11 +16,24 @@ return array(
                     ),
                 ),
             ),
+            'item' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/item[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Category\Controller\Item',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(
         'invokables' => array(
             'Category\Controller\Category'   => 'Category\Controller\CategoryController',
+            'Category\Controller\Item'       => 'Category\Controller\ItemController',
             'User\Controller\AbstractRestfulJsonController' => '..\User\Controller\AbstractRestfulJsonController',
         ),
     ),

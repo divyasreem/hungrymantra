@@ -12,16 +12,32 @@ use User\Entity\Base;
  * A Categorym.
  *
  * @ORM\Entity
- * @ORM\Table(name="category")
+ * @ORM\Table(name="item")
  * @property string $name
  * 
  */
-class Category extends Base
+class Item extends Base
 {
     /**
      * @ORM\Column(type="string", name="name")
     **/
     protected $name;
+
+    /**
+     * @ORM\Column(type="decimal", scale=2)
+    **/
+    protected $price;
+
+    /**
+     * @ORM\Column(type="integer")
+    **/
+    protected $quantity;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+    **/
+    protected $category;
   
     /**
      * Convert the object to an array.
@@ -35,6 +51,18 @@ class Category extends Base
 
     public function getName(){
         return $this->name;
+    }
+
+    public function getPrice(){
+        return $this->price;
+    }
+
+    public function getQuantity(){
+        return $this->quantity;
+    }
+
+    public function setCategory($category){
+        $this->category = $category;
     }
 
     public function getInputFilter($em){
@@ -53,7 +81,7 @@ class Category extends Base
                         'name'    => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min'      => 5,
+                            'min'      => 3,
                             'max'      => 100,
                         ),
                     ),array(
