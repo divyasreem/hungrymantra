@@ -20,8 +20,8 @@ Alternately, clone the repository and manually invoke `composer` using the shipp
 `composer.phar`:
 
     cd my/project/dir
-    git clone git://github.com/paragshar/zf2-doctrine-rest-api.git
-    cd zf2-doctrine-rest-api
+    git clone https://github.com/divyasreem/hungrymantra.git
+    cd hungrymantra
     php composer.phar self-update
     php composer.phar install
 
