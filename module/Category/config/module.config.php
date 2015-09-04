@@ -28,12 +28,26 @@ return array(
                     ),
                 ),
             ),
+            'cart' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/cart[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Category\Controller\Cart',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(
         'invokables' => array(
             'Category\Controller\Category'   => 'Category\Controller\CategoryController',
             'Category\Controller\Item'       => 'Category\Controller\ItemController',
+            'Category\Controller\Cart'       => 'Category\Controller\CartController',
+            'Category\Controller\Transaction'=> 'Category\Controller\TransactionController',
             'User\Controller\AbstractRestfulJsonController' => '..\User\Controller\AbstractRestfulJsonController',
         ),
     ),

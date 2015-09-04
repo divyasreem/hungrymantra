@@ -29,7 +29,7 @@ class Item extends Base
     protected $price;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable= TRUE)
     **/
     protected $quantity;
 

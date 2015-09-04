@@ -14,11 +14,17 @@ return array(
         'User\Controller\User-get',
         'User\Controller\User-update',
         'User\Controller\User-logout',
+        'Category\Controller\Cart-create',
+        'Category\Controller\Cart-get',
+        'Category\Controller\Cart-delete',
     ),
     'vendor' => array(
         'Category\Controller\Category-create',
         'Category\Controller\Category-update',
         'Category\Controller\Item-create',
         'Category\Controller\Item-update',
+        'Category\Controller\Cart-create',
+        'Category\Controller\Cart-get',
+        'Category\Controller\Cart-delete',
     )
 );
