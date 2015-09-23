@@ -20,9 +20,9 @@ use User\Entity\Base;
 class User extends Base
 {
     /**
-     * @ORM\Column(type="string", name="fullname")
+     * @ORM\Column(type="string", name="full_name")
     **/
-    protected $fullName;
+    protected $full_name;
 
     /**
      * @ORM\Column(type="string", name="first_name", nullable= TRUE)
@@ -53,7 +53,7 @@ class User extends Base
     /**
      * @ORM\Column(type="string", length=20)
     **/
-    public $role;
+    public $role = 'user';
 
     /**
      * @ORM\Column(type="decimal", scale=2)
