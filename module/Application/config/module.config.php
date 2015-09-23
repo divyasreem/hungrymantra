@@ -99,4 +99,9 @@ return array(
             ),
         ),
     ),
+     'controller_plugins' => array(
+        'invokables' => array(
+            'CommonHelper' => 'Application\Controller\Plugin\CommonHelper',
+        ),
+    ),
 );

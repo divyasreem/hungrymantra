@@ -17,6 +17,12 @@ return array(
         'Category\Controller\Cart-create',
         'Category\Controller\Cart-get',
         'Category\Controller\Cart-delete',
+        'Category\Controller\Transaction-create',
+        'Category\Controller\Transaction-update',
+        'Category\Controller\Transaction-get',
+        'Category\Controller\Cart-getSavedItemsLoggedUser',
+        'Category\Controller\Cart-deleteAllCartItems',
+        'Category\Controller\Transaction-getOrderDetails',
     ),
     'vendor' => array(
         'Category\Controller\Category-create',
@@ -26,5 +32,12 @@ return array(
         'Category\Controller\Cart-create',
         'Category\Controller\Cart-get',
         'Category\Controller\Cart-delete',
+        'User\Controller\User-logout',
+        'Category\Controller\Transaction-create',
+        'Category\Controller\Transaction-update',
+        'Category\Controller\Transaction-getOrderDetails',
+        'Category\Controller\Transaction-get',
+        'Category\Controller\Cart-getSavedItemsLoggedUser',
+        'Category\Controller\Cart-deleteAllCartItems',
     )
 );

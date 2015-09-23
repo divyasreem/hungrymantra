@@ -18,16 +18,10 @@ use User\Entity\User;
 class Transaction extends Base {
 
   /**
-   * @ORM\Column(type="decimal", scale=2)
+   * @ORM\Column(type="decimal", scale=2, nullable= TRUE)
    *
   **/
   protected $amount;
-
-  /**
-   * @ORM\ManyToOne(targetEntity="Category\Entity\Item", cascade={"persist", "remove"})
-   * @ORM\JoinColumn(name="item_id", referencedColumnName="id")
-  **/
-  protected $item;
 
   /**
    * @ORM\Column(type="string")

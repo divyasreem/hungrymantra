@@ -80,6 +80,22 @@ class Cart extends Base
         $this->quantity = $quantity;
     }
 
+    public function getQuantity(){
+        return $this->quantity;
+    }
+
+    public function getItem(){
+        return $this->item;
+    }
+
+    public function getUnitPrice(){
+        return $this->unit_price;
+    }
+
+    public function getSubTotal(){
+        return $this->sub_total;
+    }
+
     public function getInputFilter($em){
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();

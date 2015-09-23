@@ -119,4 +119,28 @@ class CartController extends AbstractRestfulJsonController{
         return new JsonModel();
     }
 
+    function getSavedItemsLoggedUserAction() {
+        $helper = $this->CommonHelper();
+        $cart_items = $helper->savedLoans($this->identity()->getId());
+        if(!empty($cart_items)) {    
+             $cart_items = array_map(function($cart_item){
+                return $cart_item->toArray();
+            }, $cart_items); 
+            return  new JsonModel(array('status'=>'ok','data'=>$cart_items));
+           
+        }
+        return new JsonModel(array('status'=>'ok','data'=>"Cart is empty"));
+
+    }
+
+    function deleteAllCartItemsAction() {
+        $helper = $this->CommonHelper();
+        $cart_items = $helper->savedLoans($this->identity()->getId());
+        if(!empty($cart_items)) {  
+            foreach ($cart_items as $key => $cart) {
+                $id = $cart->getId();
+                $this->delete($id);
+            }
+        }  
+    }
 }

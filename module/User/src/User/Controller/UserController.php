@@ -142,4 +142,16 @@ class UserController extends AbstractRestfulJsonController{
         return new JsonModel();
     }
 
+    public function walletRechargeAction($amount) {
+        $logged_user_id = $this->identity()->getId();
+        $user = $this->get($logged_user_id);
+        $user->setWalletAmount($user->getWalletAmount() + $amount);
+        $user->validate($this->em);
+        
+        $this->getEntityManager()->flush();
+        
+        return new JsonModel($user->toArray());
+        
+    }
+
 }

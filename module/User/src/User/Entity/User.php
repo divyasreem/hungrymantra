@@ -91,6 +91,10 @@ class User extends Base
       $this->created_date = $created_date;
     }    
 
+    public function getWalletAmount() {
+        return $this->wallet_amount;
+    }
+
     public function getInputFilter($em){
         if (!$this->inputFilter) {
             $inputFilter = new InputFilter();

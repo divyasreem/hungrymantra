@@ -42,15 +42,18 @@ class TransactionController extends AbstractRestfulJsonController{
 
     public function create($data){
         $this->getEntityManager();
-        $item = new \Category\Entity\Transaction($data);
-        $transaction = $this->getEntityManager()->getRepository('Category\Entity\Transaction')->find($data['category_id']);
-        $item->setCategory($transaction);
-        $item->validate($this->em);
-        
-        $this->getEntityManager()->persist($item);
+        $transaction = new \Category\Entity\Transaction($data);
+        $transaction->setUser($this->identity());
+        $transaction->setCreatedDate(date("Y-m-d"));
+        $transaction->validate($this->em);
+        $this->getEntityManager()->persist($transaction);
         $this->getEntityManager()->flush();
+        $order_amount = $this->CreateOrderItem($transaction);
         
-        return new JsonModel($item->toArray());
+        $transaction_update['amount'] = $order_amount;
+        $this->update($transaction->getId(), $transaction_update);
+
+        return new JsonModel($transaction->toArray());
     }
 
     public function update($id, $data){
@@ -72,6 +75,46 @@ class TransactionController extends AbstractRestfulJsonController{
         $this->getEntityManager()->flush();
         
         return new JsonModel($transaction->toArray());
+    }
+
+    private function CreateOrderItem($transaction) {
+        $helper = $this->CommonHelper();
+        $cart_items = $helper->savedLoans($this->identity()->getId());
+        $total_amount = 0;
+       
+        foreach($cart_items as $item) {
+            $order_item = new \Category\Entity\OrderItem();
+            $order_item->setQuantity($item->getQuantity());
+            $order_item->setItem($item->getItem());
+            $order_item->setUnitPrice($item->getItem()->getPrice());
+            $order_item->setSubTotal($item->getItem()->getPrice() * $item->getQuantity());
+            $order_item->setTransaction($transaction );
+            $this->getEntityManager()->persist($order_item);
+            $this->getEntityManager()->flush();
+            $total_amount = $total_amount + $order_item->getSubTotal();
+
+            $this->forward()->dispatch('Category\Controller\Cart', array(
+                'action' => 'deleteAllCartItems'
+            ));
+        }
+
+        return $total_amount;
+    }
+
+    public function getOrderDetailsAction() {
+       $transaction_id = $this->params()->fromQuery('transaction_id');
+       $em = $this->getEntityManager();
+       $queryBuilder = $em->createQueryBuilder();
+       $order_items = $queryBuilder->select('o')->from('Category\Entity\OrderItem', 'o')
+                                                        ->where('o.transaction = :transaction_id')
+                                                        ->setParameter('transaction_id', $transaction_id)
+                                                        ->getQuery()
+                                                        ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        // $order_items = array_map(function($order_item){
+        //     return $order_item->toArray();
+        // }, $order_items);
+        
+        return new JsonModel(array('status'=>'ok', "data" => $order_items));
     }
 
 }

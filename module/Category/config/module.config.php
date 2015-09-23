@@ -40,6 +40,51 @@ return array(
                     ),
                 ),
             ),
+            'getSavedItemsLoggedUser'  => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/getSavedItemsLoggedUser',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Category\Controller',
+                        'controller'    => 'Cart',
+                        'action'        => 'getSavedItemsLoggedUser',
+                    ),
+                ),
+            ),
+            'deleteAllCartItems' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/deleteAllCartItems',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Category\Controller',
+                        'controller'    => 'Cart',
+                        'action'        => 'deleteAllCartItems',
+                    ),
+                ),
+            ),
+            'transaction' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/transaction[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Category\Controller\Transaction',
+                    ),
+                ),
+            ),
+            'getOrderDetails' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/getOrderDetails',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Category\Controller',
+                        'controller'    => 'Transaction',
+                        'action'        => 'getOrderDetails',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(
