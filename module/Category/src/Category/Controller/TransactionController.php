@@ -41,6 +41,8 @@ class TransactionController extends AbstractRestfulJsonController{
     }
 
     public function create($data){
+        $order = $this->calculateOrderAmount();
+        
         $this->getEntityManager();
         $transaction = new \Category\Entity\Transaction($data);
         $transaction->setUser($this->identity());
@@ -115,6 +117,18 @@ class TransactionController extends AbstractRestfulJsonController{
         // }, $order_items);
         
         return new JsonModel(array('status'=>'ok', "data" => $order_items));
+    }
+
+    public function calculateOrderAmount() {
+        $helper = $this->CommonHelper();
+        $total_amount = 0;
+        $cart_items = $helper->savedLoans($this->identity()->getId());
+        foreach($cart_items as $item) {
+            $amount = $item->getItem()->getPrice() * $item->getQuantity();
+            $total_amount = $total_amount + $amount;
+        }
+
+        return array('total_amount' => $total_amount, 'cart_items' => $cart_items);
     }
 
 }
