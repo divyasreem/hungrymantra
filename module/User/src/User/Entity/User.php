@@ -83,6 +83,10 @@ class User extends Base
         return $this->password;
     }
 
+    public function getRole() {
+        return $this->role;
+    }
+
     public function setPassword($password) {
         $this->password = $password;
     }

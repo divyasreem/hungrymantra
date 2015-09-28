@@ -97,6 +97,15 @@ class CommonHelper extends AbstractPlugin{
     //  echo "E-Mail has been sent";
     // }
   }
+
+  function updateUser($user_id, $data) {
+    $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($user_id);
+    $user->set($data);
+    $user->validate($this->em);
+    $this->getEntityManager()->flush();
+
+    return $user;
+  }
 }
 
 ?>

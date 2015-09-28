@@ -41,19 +41,31 @@ class TransactionController extends AbstractRestfulJsonController{
     }
 
     public function create($data){
-        $order = $this->calculateOrderAmount();
-        
         $this->getEntityManager();
         $transaction = new \Category\Entity\Transaction($data);
         $transaction->setUser($this->identity());
         $transaction->setCreatedDate(date("Y-m-d"));
-        $transaction->validate($this->em);
-        $this->getEntityManager()->persist($transaction);
-        $this->getEntityManager()->flush();
-        $order_amount = $this->CreateOrderItem($transaction);
-        
-        $transaction_update['amount'] = $order_amount;
-        $this->update($transaction->getId(), $transaction_update);
+        $transaction->setSource($data['source']);
+        if($data['source'] == 'order') {
+            $order = $this->calculateOrderAmount();
+            if($order['total_amount'] > $this->identity()->getWalletAmount()) {
+                return new JsonModel(array('status'=> 'ok','data' => 'Please recharge your wallet to place an order'));
+            }
+            $transaction->setAmount($order['total_amount']);
+            $transaction->validate($this->em);
+            $this->getEntityManager()->persist($transaction);
+            $this->getEntityManager()->flush();
+            $order_amount = $this->CreateOrderItem($transaction, $order['cart_items']);
+            $data['wallet_amount'] = $this->identity()->getWalletAmount() - $order['total_amount'];
+        } else if($data['source'] == 'wallet_recharge' && $this->identity()->getRole() != 'user') {
+            $transaction->setAmount($data['amount']);
+            $transaction->validate($this->em);
+            $this->getEntityManager()->persist($transaction);
+            $this->getEntityManager()->flush();
+            $data['wallet_amount'] = $this->identity()->getWalletAmount() + $data['amount'];
+        }
+        $helper = $this->CommonHelper();
+        $helper->updateUser($this->identity()->getId(), $data);
 
         return new JsonModel($transaction->toArray());
     }
@@ -79,9 +91,7 @@ class TransactionController extends AbstractRestfulJsonController{
         return new JsonModel($transaction->toArray());
     }
 
-    private function CreateOrderItem($transaction) {
-        $helper = $this->CommonHelper();
-        $cart_items = $helper->savedLoans($this->identity()->getId());
+    private function CreateOrderItem($transaction, $cart_items) {
         $total_amount = 0;
        
         foreach($cart_items as $item) {
