@@ -33,6 +33,7 @@ return array(
         'Category\Controller\Cart-get',
         'Category\Controller\Cart-delete',
         'User\Controller\User-logout',
+        'User\Controller\User-get',
         'Category\Controller\Transaction-create',
         'Category\Controller\Transaction-update',
         'Category\Controller\Transaction-getOrderDetails',
