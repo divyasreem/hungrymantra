@@ -43,7 +43,6 @@ class TransactionController extends AbstractRestfulJsonController{
     public function create($data){
         $this->getEntityManager();
         $transaction = new \Category\Entity\Transaction($data);
-        $transaction->setUser($this->identity());
         $transaction->setCreatedDate(date("Y-m-d"));
         $transaction->setSource($data['source']);
         if($data['source'] == 'order') {
@@ -51,21 +50,26 @@ class TransactionController extends AbstractRestfulJsonController{
             if($order['total_amount'] > $this->identity()->getWalletAmount()) {
                 return new JsonModel(array('status'=> 'ok','data' => 'Please recharge your wallet to place an order'));
             }
+            $transaction->setUser($this->identity());
             $transaction->setAmount($order['total_amount']);
             $transaction->validate($this->em);
             $this->getEntityManager()->persist($transaction);
             $this->getEntityManager()->flush();
             $order_amount = $this->CreateOrderItem($transaction, $order['cart_items']);
             $data['wallet_amount'] = $this->identity()->getWalletAmount() - $order['total_amount'];
+            $user_id = $this->identity()->getId();
         } else if($data['source'] == 'wallet_recharge' && $this->identity()->getRole() != 'user') {
+            $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($data['user_id']);
+            $transaction->setUser($user);
             $transaction->setAmount($data['amount']);
             $transaction->validate($this->em);
             $this->getEntityManager()->persist($transaction);
             $this->getEntityManager()->flush();
-            $data['wallet_amount'] = $this->identity()->getWalletAmount() + $data['amount'];
+            $data['wallet_amount'] = $user->getWalletAmount() + $data['amount'];
+            $user_id = $user->getId();
         }
         $helper = $this->CommonHelper();
-        $helper->updateUser($this->identity()->getId(), $data);
+        $helper->updateUser($user_id, $data);
 
         return new JsonModel($transaction->toArray());
     }
