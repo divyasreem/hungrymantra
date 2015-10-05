@@ -9,6 +9,7 @@ return array(
         'User\Controller\User-invalidAccess',
         'Category\Controller\Category-get',
         'Category\Controller\Item-get',
+        'Category\Controller\Item-categoryItems',
     ),
     'user' => array(
         'User\Controller\User-get',

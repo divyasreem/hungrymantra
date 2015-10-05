@@ -28,6 +28,17 @@ return array(
                     ),
                 ),
             ),
+            'categoryItems' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/categoryItems',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Category\Controller',
+                        'controller'    => 'Item',
+                        'action'        => 'categoryItems',
+                    ),
+                ),
+            ),
             'cart' => array(
                 'type'    => 'segment',
                 'options' => array(

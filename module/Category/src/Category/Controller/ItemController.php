@@ -74,4 +74,16 @@ class ItemController extends AbstractRestfulJsonController{
         return new JsonModel($item->toArray());
     }
 
+    public function categoryItemsAction() {
+         $category_id = $this->params()->fromQuery('category_id');
+         $em = $this->getEntityManager();
+         $queryBuilder = $em->createQueryBuilder();
+         $items = $queryBuilder->select('i')->from('Category\Entity\Item', 'i')
+                                                            ->where('i.category = :category_id')
+                                                            ->setParameter('category_id', $category_id)
+                                                            ->getQuery()
+                                                            ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        return new JsonModel($items);                                                  
+    }
+
 }
