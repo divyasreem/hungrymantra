@@ -96,6 +96,17 @@ return array(
                     ),
                 ),
             ),
+            'getOrders' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/getOrders',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Category\Controller',
+                        'controller'    => 'Transaction',
+                        'action'        => 'getOrders',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(

@@ -24,6 +24,7 @@ return array(
         'Category\Controller\Cart-getSavedItemsLoggedUser',
         'Category\Controller\Cart-deleteAllCartItems',
         'Category\Controller\Transaction-getOrderDetails',
+        'Category\Controller\Transaction-getOrders'
     ),
     'vendor' => array(
         'Category\Controller\Category-create',

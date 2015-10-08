@@ -24,10 +24,6 @@ class TransactionController extends AbstractRestfulJsonController{
         return new JsonModel($transactions);
     }
 
-     public function getMyCategoriesAction(){
-        return $this->getList();
-    }
-
     public function get($id){  
         // Action used for GET requests with resource Id
         $transaction = $this->getEntityManager()->getRepository('Category\Entity\Transaction')->find($id);
@@ -143,6 +139,18 @@ class TransactionController extends AbstractRestfulJsonController{
         }
 
         return array('total_amount' => $total_amount, 'cart_items' => $cart_items);
+    }
+
+    public function getOrders() {
+       $em = $this->getEntityManager();
+       $queryBuilder = $em->createQueryBuilder();
+       $orders = $queryBuilder->select('t')->from('Category\Entity\Transaction', 't')
+                                                        ->where('t.user = :user_id')
+                                                        ->setParameter('user_id', $this->identity()->getId())
+                                                        ->getQuery()
+                                                        ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
+        return new JsonModel(array('status'=>'ok', "data" => $orders));
     }
 
 }
