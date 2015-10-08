@@ -141,7 +141,7 @@ class TransactionController extends AbstractRestfulJsonController{
         return array('total_amount' => $total_amount, 'cart_items' => $cart_items);
     }
 
-    public function getOrders() {
+    public function getOrdersAction() {
        $em = $this->getEntityManager();
        $queryBuilder = $em->createQueryBuilder();
        $orders = $queryBuilder->select('t')->from('Category\Entity\Transaction', 't')
