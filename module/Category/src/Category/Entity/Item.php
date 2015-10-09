@@ -88,7 +88,7 @@ class Item extends Base
                         'name'  => 'User\Validator\NoEntityExists',
                         'options'=>array(
                             'entityManager' =>$em,
-                            'class' => 'Category\Entity\Category',
+                            'class' => 'Category\Entity\Item',
                             'property' => 'name',
                             'exclude' => array(
                                 array('property' => 'id', 'value' => $this->getId())
@@ -97,6 +97,34 @@ class Item extends Base
                     )
                 )
             ));
+            $inputFilter->add(array(
+                'name' => 'price',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'Zend\I18n\Validator\Float',
+                    ),
+                    array(
+                        'name' => 'GreaterThan',
+                        'options' => array(
+                          'min' => 0
+                        )                    
+                    ) 
+                ),            
+            ));
+            $inputFilter->add(array(
+                'name' => 'category',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+               
+            ));    
  
             $this->inputFilter = $inputFilter;
         }
