@@ -47,6 +47,7 @@ class Category extends Base
                 'filters'  => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
+                    array('name' => 'Application\Filter\MyFilter')
                 ),
                 'validators' => array(
                     array(
