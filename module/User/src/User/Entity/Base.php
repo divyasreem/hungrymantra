@@ -61,7 +61,15 @@ class Base
         return $vars;
     }
 
+
+    public function filter($em){
+        $this->getInputFilter($em);
+        $this->inputFilter->setData($this->toArray());
+        $this->set($this->inputFilter->getValues());
+    }
+
     public function validate($em = null, $throwException = true){
+        $this->filter($em);
         $errorMessages = array();
         $vars = get_object_vars($this);
         foreach($vars as $key =>$val){

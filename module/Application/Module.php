@@ -118,4 +118,12 @@ class Module
             
         );
     }
+
+    public function getFilterConfig() {
+        return array(
+            'invokables' => array(
+                'Application\Filter\MyFilter' => 'Application\Filter\MyFilter'
+            )
+        );
+    }
 }
