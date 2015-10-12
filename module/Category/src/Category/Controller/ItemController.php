@@ -114,6 +114,12 @@ class ItemController extends AbstractRestfulJsonController{
         list($type, $file_data) = explode(';', $file_data);
         list(, $file_data)      = explode(',', $file_data);
         $file_data = base64_decode($file_data);
+        if (!file_exists(PUBLIC_PATH.'images')) {
+            mkdir(PUBLIC_PATH.'images', 0777, true);
+        }
+         if (!file_exists(PUBLIC_PATH.'images/item')) {
+            mkdir(PUBLIC_PATH.'images/item', 0777, true);
+        }
         $image_path = PUBLIC_PATH.'images/item/';  
         fopen($image_path.$item->getId().$ext,"w");
         file_put_contents($image_path.$item->getId().$ext, $file_data);
