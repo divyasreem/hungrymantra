@@ -106,6 +106,34 @@ class CommonHelper extends AbstractPlugin{
 
     return $user;
   }
+
+
+  function check_img($file) {
+       $x = getimagesize($file);
+
+       switch ($x['mime']) {
+          case "image/png":
+             $response = 'this is a gif image.';
+             break;
+          case "image/jpeg":
+             $response = 'this is a jpeg image.';
+             break;
+          case "image/jpg":
+             $response = 'this is a png image.';
+             break;
+          default:
+             if (!unlink($file))           {
+               // echo ("Error deleting $file");
+             }  else           {
+               // echo ("Deleted $file");
+             }
+             $response = 'Please upload a valid image';
+             break;
+       }
+
+       return $response;    
+    } 
+
 }
 
 ?>

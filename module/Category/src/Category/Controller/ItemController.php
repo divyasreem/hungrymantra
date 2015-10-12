@@ -49,6 +49,10 @@ class ItemController extends AbstractRestfulJsonController{
         
         $this->getEntityManager()->persist($item);
         $this->getEntityManager()->flush();
+
+        if(!empty($data['image'])) {
+            $res = $this->uploadImage($data, $item);
+        }
         
         return new JsonModel($item->toArray());
     }
@@ -60,6 +64,10 @@ class ItemController extends AbstractRestfulJsonController{
         $item->validate($this->em);
         
         $this->getEntityManager()->flush();
+
+        if(!empty($data['image'])) {
+            $res = $this->uploadImage($data, $item);
+        }
         
         return new JsonModel($item->toArray());
     }
@@ -84,6 +92,36 @@ class ItemController extends AbstractRestfulJsonController{
                                                             ->getQuery()
                                                             ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         return new JsonModel($items);                                                  
+    }
+
+    function uploadImage($data, $item) {
+        if(empty($data) || empty($item)) {
+            $this->getResponse()->setStatusCode(400);
+            return new JsonModel();
+        }
+        $ext = $data['extention'];
+        $file_data = $data['image'];
+        $img = base64_decode($file_data);
+        if (!$img) {
+            $res = 'Please upload a valid image';
+            return $res;
+        }
+        $data_file = explode(';', $file_data);
+        if(strpos($data_file[0],'image') === false) {
+            $res = 'Please upload a valid image';
+            return $res;
+        }
+        list($type, $file_data) = explode(';', $file_data);
+        list(, $file_data)      = explode(',', $file_data);
+        $file_data = base64_decode($file_data);
+        $image_path = PUBLIC_PATH.'images/item/';  
+        fopen($image_path.$item->getId().$ext,"w");
+        file_put_contents($image_path.$item->getId().$ext, $file_data);
+
+        $helper = $this->CommonHelper();
+        $res = $helper->check_img($image_path.$item->getId().$ext);
+       
+        return $res;
     }
 
 }
