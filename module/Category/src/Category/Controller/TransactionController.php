@@ -121,10 +121,10 @@ class TransactionController extends AbstractRestfulJsonController{
                                                         ->where('o.transaction = :transaction_id')
                                                         ->setParameter('transaction_id', $transaction_id)
                                                         ->getQuery()
-                                                        ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-        // $order_items = array_map(function($order_item){
-        //     return $order_item->toArray();
-        // }, $order_items);
+                                                        ->getResult();
+        $order_items = array_map(function($order_item){
+            return $order_item->toArray();
+        }, $order_items);
         
         return new JsonModel(array('status'=>'ok', "data" => $order_items));
     }
