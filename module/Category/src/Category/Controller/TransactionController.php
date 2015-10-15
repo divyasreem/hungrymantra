@@ -123,8 +123,9 @@ class TransactionController extends AbstractRestfulJsonController{
                                                         ->getQuery()
                                                         ->getResult();
         $order_items = array_map(function($order_item){
-            unset($order_item->getTransaction());
-            return $order_item->toArray();
+            $order = $order_item->toArray()
+            unset($order['transaction']);
+            return $order;
         }, $order_items);
         
         return new JsonModel(array('status'=>'ok', "data" => $order_items));
