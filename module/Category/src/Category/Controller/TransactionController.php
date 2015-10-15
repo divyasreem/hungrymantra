@@ -132,7 +132,7 @@ class TransactionController extends AbstractRestfulJsonController{
     public function calculateOrderAmount() {
         $helper = $this->CommonHelper();
         $total_amount = 0;
-        $cart_items = $helper->savedLoans($this->identity()->getId());
+        $cart_items = $helper->savedItems($this->identity()->getId());
         foreach($cart_items as $item) {
             $amount = $item->getItem()->getPrice() * $item->getQuantity();
             $total_amount = $total_amount + $amount;

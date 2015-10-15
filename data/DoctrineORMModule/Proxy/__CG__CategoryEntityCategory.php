@@ -231,6 +231,17 @@ class Category extends \Category\Entity\Category implements \Doctrine\ORM\Proxy\
     /**
      * {@inheritDoc}
      */
+    public function filter($em)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'filter', array($em));
+
+        return parent::filter($em);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function validate($em = NULL, $throwException = true)
     {
 

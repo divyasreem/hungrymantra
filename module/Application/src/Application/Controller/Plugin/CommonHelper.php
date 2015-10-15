@@ -18,7 +18,7 @@ class CommonHelper extends AbstractPlugin{
 	    return $this->em;
   }
 
-  public function savedLoans($logged_user_id) {
+  public function savedItems($logged_user_id) {
     $em = $this->getEntityManager();
     $queryBuilder = $em->createQueryBuilder();
     $cart_loans = $queryBuilder->select('c')->from('Category\Entity\Cart', 'c')

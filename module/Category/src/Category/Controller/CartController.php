@@ -121,7 +121,7 @@ class CartController extends AbstractRestfulJsonController{
 
     function getSavedItemsLoggedUserAction() {
         $helper = $this->CommonHelper();
-        $cart_items = $helper->savedLoans($this->identity()->getId());
+        $cart_items = $helper->savedItems($this->identity()->getId());
         if(!empty($cart_items)) {    
              $cart_items = array_map(function($cart_item){
                 return $cart_item->toArray();
@@ -135,7 +135,7 @@ class CartController extends AbstractRestfulJsonController{
 
     function deleteAllCartItemsAction() {
         $helper = $this->CommonHelper();
-        $cart_items = $helper->savedLoans($this->identity()->getId());
+        $cart_items = $helper->savedItems($this->identity()->getId());
         if(!empty($cart_items)) {  
             foreach ($cart_items as $key => $cart) {
                 $id = $cart->getId();
