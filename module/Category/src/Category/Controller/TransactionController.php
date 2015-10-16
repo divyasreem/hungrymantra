@@ -41,7 +41,6 @@ class TransactionController extends AbstractRestfulJsonController{
         $transaction = new \Category\Entity\Transaction($data);
         $transaction->setCreatedDate(date("Y-m-d"));
         $transaction->setSource($data['source']);
-        print_r($data);
         if($data['source'] == 'order') {
             print_r($data);
             $order = $this->calculateOrderAmount();
@@ -66,7 +65,6 @@ class TransactionController extends AbstractRestfulJsonController{
             $data['wallet_amount'] = $user->getWalletAmount() + $data['amount'];
             $user_id = $user->getId();
         }
-        die();
         $helper = $this->CommonHelper();
         $helper->updateUser($user_id, $data);
 
