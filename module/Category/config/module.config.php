@@ -107,6 +107,17 @@ return array(
                     ),
                 ),
             ),
+            'getOrdersInprogress'=> array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/getOrdersInprogress',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Category\Controller',
+                        'controller'    => 'Transaction',
+                        'action'        => 'getOrdersInprogress',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(

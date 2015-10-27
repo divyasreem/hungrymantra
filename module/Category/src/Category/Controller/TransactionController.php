@@ -156,4 +156,17 @@ class TransactionController extends AbstractRestfulJsonController{
         return new JsonModel(array('status'=>'ok', "data" => $orders));
     }
 
+    public function getOrdersInprogressAction() {
+       $em = $this->getEntityManager();
+       $queryBuilder = $em->createQueryBuilder();
+       $orders = $queryBuilder->select('t')->from('Category\Entity\Transaction', 't')
+                                                        ->where('t.status = :status and t.source = :source')
+                                                        ->setParameter('status', "in_progress")
+                                                        ->setParameter('source', "order")
+                                                        ->getQuery()
+                                                        ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+
+        return new JsonModel(array('status'=>'ok', "data" => $orders));
+    }
+
 }
