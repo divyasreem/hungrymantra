@@ -48,7 +48,7 @@ class Transaction extends Base {
   protected $source = 'item';
  
   /**
-   * @ORM\ManyToOne(targetEntity="User\Entity\User", cascade={"persist", "remove"})
+   * @ORM\ManyToOne(targetEntity="User\Entity\User")
    * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
   **/
   protected $user;

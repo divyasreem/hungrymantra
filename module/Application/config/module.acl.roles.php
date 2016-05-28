@@ -36,6 +36,7 @@ return array(
         'Category\Controller\Category-delete',
         'Category\Controller\Item-create',
         'Category\Controller\Item-update',
+        'Category\Controller\Item-delete',
         'Category\Controller\Cart-create',
         'Category\Controller\Cart-get',
         'Category\Controller\Cart-delete',

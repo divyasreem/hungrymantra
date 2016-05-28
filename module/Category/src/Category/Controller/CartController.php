@@ -59,7 +59,7 @@ class CartController extends AbstractRestfulJsonController{
                                                ->setParameter('user_id', $user_id)
                                                ->getQuery()
                                                ->getResult();
-
+        print_r($cart_loan);die();
         return $cart_loan;
     }
 	

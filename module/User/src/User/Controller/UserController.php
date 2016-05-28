@@ -124,10 +124,10 @@ class UserController extends AbstractRestfulJsonController{
     function commonLogin($data, $has_encrypt) {
         $authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
         $adapter = $authService->getAdapter();
-        $adapter->setIdentityValue($data['email']); 
+        $adapter->setIdentity($data['email']); 
         if($has_encrypt)
             $data['password'] = $this->encriptPassword($this->getStaticSalt(),  $data['password']);
-        $adapter->setCredentialValue($data['password']); 
+        $adapter->setCredential($data['password']); 
         $authResult = $authService->authenticate();
         if ($authResult->isValid()) {
            $identity = $authResult->getIdentity();
