@@ -101,7 +101,7 @@ class CommonHelper extends AbstractPlugin{
   function updateUser($user_id, $data) {
     $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($user_id);
     $user->set($data);
-    // $user->validate($this->em);
+    $user->validate($this->em);
     $this->getEntityManager()->flush();
 
     return $user;

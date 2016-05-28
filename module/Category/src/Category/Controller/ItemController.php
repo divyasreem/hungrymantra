@@ -91,12 +91,16 @@ class ItemController extends AbstractRestfulJsonController{
 
     public function delete($id){
         // Action used for DELETE requests
-        $item = $this->getEntityManager()->getRepository('Category\Entity\Item')->find($id);
-        $this->getEntityManager()->remove($item);
-        
-        $this->getEntityManager()->flush();
-        
-        return new JsonModel($item->toArray());
+        if(!empty($id)) {
+            $item = $this->getEntityManager()->getRepository('Category\Entity\Item')->find($id);
+            $this->getEntityManager()->remove($item);
+            
+            $this->getEntityManager()->flush();
+            $this->getResponse()->setStatusCode(200);
+            return new JsonModel($item->toArray());
+        }
+        $this->getResponse()->setStatusCode(400);
+        return new JsonModel(array("status" => "error", "data" => "ID is required"));
     }
 
     public function categoryItemsAction() {

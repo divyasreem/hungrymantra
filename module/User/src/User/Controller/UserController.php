@@ -68,7 +68,7 @@ class UserController extends AbstractRestfulJsonController{
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
         $this->getResponse()->setStatusCode(200);
-        return new JsonModel($user->toArray());
+        return new JsonModel(array("status'=>'ok", "data"=>$user->toArray());
     }
 
     public function getStaticSalt() {
