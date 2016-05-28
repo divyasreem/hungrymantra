@@ -36,7 +36,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see \Doctrine\Common\Persistence\Proxy::__getLazyProperties
      */
-    public static $lazyPropertiesDefaults = array();
+    public static $lazyPropertiesDefaults = [];
 
 
 
@@ -64,10 +64,10 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'name', 'price', 'quantity', 'category', 'inputFilter', 'id', 'rawdata');
+            return ['__isInitialized__', 'name', 'price', 'quantity', 'category', 'inputFilter', 'id', 'rawdata'];
         }
 
-        return array('__isInitialized__', 'name', 'price', 'quantity', 'category', 'inputFilter', 'id', 'rawdata');
+        return ['__isInitialized__', 'name', 'price', 'quantity', 'category', 'inputFilter', 'id', 'rawdata'];
     }
 
     /**
@@ -97,7 +97,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __clone()
     {
-        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', array());
+        $this->__cloner__ && $this->__cloner__->__invoke($this, '__clone', []);
     }
 
     /**
@@ -105,7 +105,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load()
     {
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__load', []);
     }
 
     /**
@@ -179,7 +179,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function getName()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', []);
 
         return parent::getName();
     }
@@ -190,7 +190,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function getPrice()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrice', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPrice', []);
 
         return parent::getPrice();
     }
@@ -201,7 +201,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function getQuantity()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getQuantity', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getQuantity', []);
 
         return parent::getQuantity();
     }
@@ -212,7 +212,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function setCategory($category)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCategory', array($category));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCategory', [$category]);
 
         return parent::setCategory($category);
     }
@@ -223,7 +223,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function getInputFilter($em)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInputFilter', array($em));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInputFilter', [$em]);
 
         return parent::getInputFilter($em);
     }
@@ -234,7 +234,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function setId($id)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', array($id));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$id]);
 
         return parent::setId($id);
     }
@@ -244,8 +244,12 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
      */
     public function getId()
     {
+        if ($this->__isInitialized__ === false) {
+            return (int)  parent::getId();
+        }
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', array());
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getId', []);
 
         return parent::getId();
     }
@@ -253,12 +257,12 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function toArray()
+    public function toArray($depth = 0)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toArray', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toArray', [$depth]);
 
-        return parent::toArray();
+        return parent::toArray($depth);
     }
 
     /**
@@ -267,7 +271,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function filter($em)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'filter', array($em));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'filter', [$em]);
 
         return parent::filter($em);
     }
@@ -278,7 +282,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function validate($em = NULL, $throwException = true)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'validate', array($em, $throwException));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'validate', [$em, $throwException]);
 
         return parent::validate($em, $throwException);
     }
@@ -289,7 +293,7 @@ class Item extends \Category\Entity\Item implements \Doctrine\ORM\Proxy\Proxy
     public function set($data)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'set', array($data));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'set', [$data]);
 
         return parent::set($data);
     }

@@ -139,6 +139,7 @@ class UserController extends AbstractRestfulJsonController{
            
            return array('status'=>'ok', 'data' => $user);
         } else {
+            $this->getResponse()->setStatusCode(401);
             return array('status'=> 'error','data'=>"Invalid Credentials");
         }
     }

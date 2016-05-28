@@ -1,5 +1,20 @@
+# 0.10.0
+
+ * [#450](https://github.com/doctrine/DoctrineORMModule/pull/450) Use stable release for DoctrineModule
+ * [#443](https://github.com/doctrine/DoctrineORMModule/pull/443) Added ability to configure the version column in MigrationsConfigurationFactory
+ * [#457](https://github.com/doctrine/DoctrineORMModule/pull/457) Fixed compatibility with Zend\Mvc 2.7
+ * [#458](https://github.com/doctrine/DoctrineORMModule/pull/458) Drop PHP 5.4 and allow PHP 7 on Travis
+
+# 0.9.2
+ * [#423](https://github.com/doctrine/DoctrineORMModule/pull/423) Docs about cache updated
+ * [#428](https://github.com/doctrine/DoctrineORMModule/pull/428) metadatagrapher - fix diagram inconcistency
+ * [#429](https://github.com/doctrine/DoctrineORMModule/pull/429) Added naming strategy doc
+ * [#434](https://github.com/doctrine/DoctrineORMModule/pull/434) bump orm to 2.5 dependency
+ * [#435](https://github.com/doctrine/DoctrineORMModule/pull/435) Feature/metadatagrapher fix
+ * [#437](https://github.com/doctrine/DoctrineORMModule/pull/437) Doctrine comment types
+
 # 0.9.1
- * [#405](https://github.com/doctrine/DoctrineORMModule/pull/405) Provide the dialog and question helper 
+ * [#405](https://github.com/doctrine/DoctrineORMModule/pull/405) Provide the dialog and question helper
  * [#413](https://github.com/doctrine/DoctrineORMModule/pull/413) Fixed missing version
  * [#414](https://github.com/doctrine/DoctrineORMModule/pull/414) Change test configuration to manage migrations path
  * [#417](https://github.com/doctrine/DoctrineORMModule/pull/417) Bump some dependencies versions to be ZF 2.5 compliant

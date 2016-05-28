@@ -58,7 +58,7 @@ class ServiceManagerTestCase
      */
     public function getServiceManager(array $configuration = null)
     {
-        $configuration = $configuration ?: static::getConfiguration();
+        $configuration  = $configuration ?: static::getConfiguration();
         $serviceManager = new ServiceManager(
             new ServiceManagerConfig(
                 isset($configuration['service_manager']) ? $configuration['service_manager'] : array()
@@ -66,7 +66,9 @@ class ServiceManagerTestCase
         );
 
         $serviceManager->setService('ApplicationConfig', $configuration);
-        $serviceManager->setFactory('ServiceListener', 'Zend\Mvc\Service\ServiceListenerFactory');
+        if (!$serviceManager->has('ServiceListener')) {
+            $serviceManager->setFactory('ServiceListener', 'Zend\Mvc\Service\ServiceListenerFactory');
+        }
 
         /* @var $moduleManager \Zend\ModuleManager\ModuleManagerInterface */
         $moduleManager = $serviceManager->get('ModuleManager');

@@ -54,7 +54,7 @@ class AbstractDoctrineServiceFactory implements AbstractFactoryInterface
 
         $factoryClass = $mappings['factoryClass'];
         /* @var $factory \DoctrineModule\Service\AbstractFactory */
-        $factory      = new $factoryClass($mappings['serviceName']);
+        $factory = new $factoryClass($mappings['serviceName']);
 
         return $factory->createService($serviceLocator);
     }
@@ -69,24 +69,43 @@ class AbstractDoctrineServiceFactory implements AbstractFactoryInterface
     {
         $matches = array();
 
-        if (! preg_match('/^doctrine\.(?P<serviceType>[a-z0-9_]+)\.(?P<serviceName>[a-z0-9_]+)$/', $name, $matches)) {
+        if (!preg_match(
+            '/^doctrine\.((?<mappingType>orm|odm)\.|)(?<serviceType>[a-z0-9_]+)\.(?<serviceName>[a-z0-9_]+)$/',
+            $name,
+            $matches
+        )) {
             return false;
         }
 
         $config      = $serviceLocator->get('Config');
+        $mappingType = $matches['mappingType'];
         $serviceType = $matches['serviceType'];
         $serviceName = $matches['serviceName'];
 
-        if (! isset($config['doctrine_factories'][$serviceType])
-            || ! isset($config['doctrine'][$serviceType][$serviceName])
-        ) {
-            return false;
-        }
+        if ($mappingType == '') {
+            if (! isset($config['doctrine_factories'][$serviceType]) ||
+                 ! isset($config['doctrine'][$serviceType][$serviceName])
+            ) {
+                return false;
+            }
 
-        return array(
-            'serviceType'  => $serviceType,
-            'serviceName'  => $serviceName,
-            'factoryClass' => $config['doctrine_factories'][$serviceType],
-        );
+            return array(
+                'serviceType'  => $serviceType,
+                'serviceName'  => $serviceName,
+                'factoryClass' => $config['doctrine_factories'][$serviceType],
+            );
+        } else {
+            if (! isset($config['doctrine_factories'][$mappingType]) ||
+                 ! isset($config['doctrine_factories'][$mappingType][$serviceType]) ||
+                 ! isset($config['doctrine'][$mappingType][$serviceType][$serviceName])
+            ) {
+                return false;
+            }
+            return array(
+                'serviceType'  => $serviceType,
+                'serviceName'  => $serviceName,
+                'factoryClass' => $config['doctrine_factories'][$mappingType][$serviceType],
+            );
+        }
     }
 }

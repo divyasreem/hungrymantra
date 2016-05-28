@@ -48,6 +48,11 @@ class UniqueObject extends ObjectExists
      */
     protected $objectManager;
 
+    /**
+     * @var boolean
+     */
+    protected $useContext;
+
     /***
      * Constructor
      *
@@ -83,6 +88,7 @@ class UniqueObject extends ObjectExists
         }
 
         $this->objectManager = $options['object_manager'];
+        $this->useContext    = isset($options['use_context']) ? (boolean) $options['use_context'] : false;
     }
 
     /**
@@ -94,8 +100,12 @@ class UniqueObject extends ObjectExists
      */
     public function isValid($value, $context = null)
     {
-        $value = $this->cleanSearchValue($value);
-        $match = $this->objectRepository->findOneBy($value);
+        if (!$this->useContext) {
+            $context = (array) $value;
+        }
+
+        $cleanedValue = $this->cleanSearchValue($value);
+        $match        = $this->objectRepository->findOneBy($cleanedValue);
 
         if (!is_object($match)) {
             return true;
@@ -129,11 +139,11 @@ class UniqueObject extends ObjectExists
     /**
      * Gets the identifiers from the context.
      *
-     * @param array $context
+     * @param  array|object $context
      * @return array
      * @throws Exception\RuntimeException
      */
-    protected function getExpectedIdentifiers(array $context = null)
+    protected function getExpectedIdentifiers($context = null)
     {
         if ($context === null) {
             throw new Exception\RuntimeException(
@@ -141,9 +151,16 @@ class UniqueObject extends ObjectExists
             );
         }
 
+        $className = $this->objectRepository->getClassName();
+
+        if ($context instanceof $className) {
+            return $this->objectManager
+                        ->getClassMetadata($this->objectRepository->getClassName())
+                        ->getIdentifierValues($context);
+        }
+
         $result = array();
         foreach ($this->getIdentifiers() as $identifierField) {
-
             if (!isset($context[$identifierField])) {
                 throw new Exception\RuntimeException(\sprintf('Expected context to contain %s', $identifierField));
             }

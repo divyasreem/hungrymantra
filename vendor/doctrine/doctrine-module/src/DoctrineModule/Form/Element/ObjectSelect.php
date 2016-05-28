@@ -44,12 +44,23 @@ class ObjectSelect extends SelectElement
 
     /**
      * @param  array|\Traversable $options
-     * @return ObjectSelect
+     * @return self
      */
     public function setOptions($options)
     {
         $this->getProxy()->setOptions($options);
         return parent::setOptions($options);
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     * @return self
+     */
+    public function setOption($key, $value)
+    {
+        $this->getProxy()->setOptions(array($key => $value));
+        return parent::setOption($key, $value);
     }
 
     /**
@@ -65,7 +76,7 @@ class ObjectSelect extends SelectElement
             } elseif ($value == null) {
                 return parent::setValue(array());
             } elseif (!is_array($value)) {
-                $value = (array)$value;
+                $value = (array) $value;
             }
 
             return parent::setValue(array_map(array($this->getProxy(), 'getValue'), $value));
@@ -79,9 +90,16 @@ class ObjectSelect extends SelectElement
      */
     public function getValueOptions()
     {
-        if (empty($this->valueOptions)) {
-            $this->setValueOptions($this->getProxy()->getValueOptions());
+        if (! empty($this->valueOptions)) {
+            return $this->valueOptions;
         }
+
+        $proxyValueOptions = $this->getProxy()->getValueOptions();
+
+        if (! empty($proxyValueOptions)) {
+            $this->setValueOptions($proxyValueOptions);
+        }
+
         return $this->valueOptions;
     }
 }

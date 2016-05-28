@@ -1,3 +1,48 @@
+# 1.0.1
+
+ * Drop compatibility with PHP 5.4 [#553](https://github.com/doctrine/DoctrineModule/pull/553)
+ * Improve TravisCi build to work with PHP 7 [#553](https://github.com/doctrine/DoctrineModule/pull/553)
+ * Update doctrine/common ~2.6 [#551](https://github.com/doctrine/DoctrineModule/pull/551)
+
+# 1.0.0
+
+ * Remove deprecated api call from test [#523](https://github.com/doctrine/DoctrineModule/pull/523)
+ * Allow for the use of Zend\Cache\Service\StorageCacheAbstractServiceFactory [#547](https://github.com/doctrine/DoctrineModule/pull/547)
+
+# 0.10.0
+
+ * Fixed php_codesniffer dependency [#521](https://github.com/doctrine/DoctrineModule/pull/521)
+ * Fixed wrong Predis Mock [#534](https://github.com/doctrine/DoctrineModule/pull/534)
+ * Update hydrator.md [#537](https://github.com/doctrine/DoctrineModule/pull/537)
+ * Fix for issue #230 and  fixes for #234 [#520](https://github.com/doctrine/DoctrineModule/pull/520)
+ * Feature/snake case [#539](https://github.com/doctrine/DoctrineModule/pull/539)
+ * Adds additional processing for DoctrineObject::toMany [#535](https://github.com/doctrine/DoctrineModule/pull/535)
+
+# 0.9.0
+
+ * Fixed intend in hydrator.md [#471](https://github.com/doctrine/DoctrineModule/pull/471)
+ * Allow symfony 3.0 [#477](https://github.com/doctrine/DoctrineModule/pull/477)
+ * Removed Travis build for 5.3 and added builds for 5.6 and 7.0 [#491](https://github.com/doctrine/DoctrineModule/pull/491)
+ * Fixed documentation for Example 4 [#486](https://github.com/doctrine/DoctrineModule/pull/486)
+ * Update year of license [#488](https://github.com/doctrine/DoctrineModule/pull/488)
+ * Standardize array configuration [#489](https://github.com/doctrine/DoctrineModule/pull/489)
+ * Fix #467 bypass value to validate message [#479](https://github.com/doctrine/DoctrineModule/pull/479)
+ * Adding doctrine/coding-standard to builds [#478](https://github.com/doctrine/DoctrineModule/pull/478)
+ * update hydrator s documentation url to current [#493](https://github.com/doctrine/DoctrineModule/pull/493)
+ * Added PredisCache support [#492](https://github.com/doctrine/DoctrineModule/pull/492)
+ * adding functionality to support custom attributes on value-options [#446](https://github.com/doctrine/DoctrineModule/pull/446)
+ * FormElement s options can be set individual [#452](https://github.com/doctrine/DoctrineModule/pull/452)
+ * Update module.config.php [#498](https://github.com/doctrine/DoctrineModule/pull/498)
+ * Implemented Optgroup functionality within Proxy element [#502](https://github.com/doctrine/DoctrineModule/pull/502)
+ * Removed check to allow zero-identifiers. [#459](https://github.com/doctrine/DoctrineModule/pull/459)
+ * Refactored tests for option_attributes [#505](https://github.com/doctrine/DoctrineModule/pull/505)
+ * Bump phpunit minimum version [#512](https://github.com/doctrine/DoctrineModule/pull/512)
+
+# 0.8.1
+
+ * Minimum PHP version has been bumped to `5.3.23` [#376](https://github.com/doctrine/DoctrineModule/pull/376)
+ * Minimum `zendframework/zendframework` version has been bumped to `2.3` [#376](https://github.com/doctrine/DoctrineModule/pull/376)
+
 # 0.8.0
 
  * Dependency to zendframework has been bumped from `2.*` to `~2.2`

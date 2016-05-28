@@ -118,6 +118,17 @@ return array(
                     ),
                 ),
             ),
+            'deleteAllCartItems'=> array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/deleteAllCartItems',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Category\Controller',
+                        'controller'    => 'Cart',
+                        'action'        => 'deleteAllCartItems',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(

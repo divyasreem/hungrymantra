@@ -24,7 +24,6 @@ use RuntimeException;
 use Doctrine\Common\Cache\MemcacheCache;
 use Doctrine\Common\Cache\MemcachedCache;
 use Doctrine\Common\Cache\RedisCache;
-use DoctrineModule\Service\AbstractFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -53,16 +52,24 @@ class CacheFactory extends AbstractFactory
             throw new RuntimeException('Cache must have a class name to instantiate');
         }
 
-        if ('filesystem' === $this->name) {
-            $cache = new $class($options->getDirectory());
-        } else {
-            $cache = new $class;
-        }
-
         $instance = $options->getInstance();
 
         if (is_string($instance) && $serviceLocator->has($instance)) {
             $instance = $serviceLocator->get($instance);
+        }
+
+        switch ($class) {
+            case 'Doctrine\Common\Cache\FilesystemCache':
+                $cache = new $class($options->getDirectory());
+                break;
+
+            case 'DoctrineModule\Cache\ZendStorageCache':
+            case 'Doctrine\Common\Cache\PredisCache':
+                $cache = new $class($instance);
+                break;
+
+            default:
+                $cache = new $class;
         }
 
         if ($cache instanceof MemcacheCache) {
@@ -75,8 +82,6 @@ class CacheFactory extends AbstractFactory
             /* @var $cache RedisCache */
             $cache->setRedis($instance);
         }
-
-        ;
 
         if ($cache instanceof CacheProvider && ($namespace = $options->getNamespace())) {
             $cache->setNamespace($namespace);

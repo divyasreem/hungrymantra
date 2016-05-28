@@ -59,7 +59,6 @@ class CartController extends AbstractRestfulJsonController{
                                                ->setParameter('user_id', $user_id)
                                                ->getQuery()
                                                ->getResult();
-        print_r($cart_loan);die();
         return $cart_loan;
     }
 	
@@ -103,6 +102,8 @@ class CartController extends AbstractRestfulJsonController{
         $cart->setQuantity($quantity);
         $cart->validate($this->em);
         $this->getEntityManager()->flush();
+
+
     
         return $cart->toArray();
     }
@@ -142,5 +143,6 @@ class CartController extends AbstractRestfulJsonController{
                 $this->delete($id);
             }
         }  
+        return  new JsonModel(array('status'=>'ok','data'=> "all cart items have been deleted"));
     }
 }
