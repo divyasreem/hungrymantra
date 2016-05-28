@@ -22,7 +22,7 @@ class CategoryController extends AbstractRestfulJsonController{
             return $category->toArray();
         }, $categories);
         $this->getResponse()->setStatusCode(200);
-        return new JsonModel($categories);
+        return new JsonModel(array("status" => "ok", "data" => $categories));
     }
 
      public function getMyCategoriesAction(){
