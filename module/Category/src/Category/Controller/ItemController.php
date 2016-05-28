@@ -21,6 +21,7 @@ class ItemController extends AbstractRestfulJsonController{
         $items = array_map(function($item){
             return $item->toArray();
         }, $items);
+        $this->getResponse()->setStatusCode(200);
         return new JsonModel($items);
     }
 
@@ -91,6 +92,7 @@ class ItemController extends AbstractRestfulJsonController{
                                                             ->setParameter('category_id', $category_id)
                                                             ->getQuery()
                                                             ->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+        $this->getResponse()->setStatusCode(200);
         return new JsonModel($items);                                                  
     }
 
