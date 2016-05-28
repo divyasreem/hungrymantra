@@ -57,7 +57,7 @@ class UserController extends AbstractRestfulJsonController{
         
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
-        
+        $this->getResponse()->setStatusCode(200);
         return new JsonModel($user->toArray());
     }
 
@@ -76,24 +76,23 @@ class UserController extends AbstractRestfulJsonController{
 
     public function update($id, $data){
         // Action used for PUT requests
-        $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
-        $user->set($data);
-        $user->validate($this->em);
-        
-        $this->getEntityManager()->flush();
-        
-        return new JsonModel($user->toArray());
+        if(!empty($id) && !empty($data)) {
+            if($this->identity()->getId() == $id){
+                $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
+                $user->set($data);
+                $user->validate($this->em);
+                
+                $this->getEntityManager()->flush();
+                $this->getResponse()->setStatusCode(200);
+                return new JsonModel($user->toArray());
+            }
+            $this->getResponse()->setStatusCode(401);
+            return new JsonModel(array('status'=> 'error','data'=>"Unautorized access/not a valid user"));
+        }
+        $this->getResponse()->setStatusCode(400);
+        return new JsonModel(array('status'=> 'error','data'=>"Post data is required"));
     }
 
-    public function delete($id){
-        // Action used for DELETE requests
-        $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
-        $this->getEntityManager()->remove($user);
-        
-        $this->getEntityManager()->flush();
-        
-        return new JsonModel($user->toArray());
-    }
 
     public function loginAction() {
        $request = $this->getRequest();
@@ -101,11 +100,15 @@ class UserController extends AbstractRestfulJsonController{
         if ($request->isPost() && !empty($data)) {
             $data = (!empty($data))? get_object_vars(json_decode($data)) : '';
             $data = $this->commonLogin($data, true);
-
+            if($data['status'] == 'ok') {
+                $this->getResponse()->setStatusCode(200);
+            } else {
+                $this->getResponse()->setStatusCode(400);
+            }
             return new JsonModel($data);
         }
         $this->getResponse()->setStatusCode(400);
-        return new JsonModel();
+        return new JsonModel(array('status'=> 'error','data'=>"Post data is required"));
     }
 
     function commonLogin($data, $has_encrypt) {
@@ -126,7 +129,6 @@ class UserController extends AbstractRestfulJsonController{
            
            return array('status'=>'ok', 'data' => $user);
         } else {
-            // $this->getResponse()->setStatusCode(400);
             return array('status'=> 'error','data'=>"Invalid Credentials");
         }
     }
@@ -134,6 +136,7 @@ class UserController extends AbstractRestfulJsonController{
     public function logoutAction() {
         $auth = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
         $auth->clearIdentity();
+        $this->getResponse()->setStatusCode(200);
         return new JsonModel(array('status'=>'successfully logged out'));
     }
 
