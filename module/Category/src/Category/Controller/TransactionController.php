@@ -68,7 +68,7 @@ class TransactionController extends AbstractRestfulJsonController{
         $helper = $this->CommonHelper();
         $helper->updateUser($user_id, $data);
         $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($user_id);
-
+        $this->getResponse()->setStatusCode(200);
         return new JsonModel($user->toArray());
     }
 

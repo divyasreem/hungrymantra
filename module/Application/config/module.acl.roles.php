@@ -2,7 +2,10 @@
 return array(
     'guest'=> array(
         'User\Controller\User-login',
-        'User\Controller\User-create'
+        'User\Controller\User-create',
+        'Category\Controller\Category-get',
+        'Category\Controller\Item-categoryItems',
+        'Category\Controller\Item-get',
     ),
     'all' => array(
         'User\Controller\User-invalidAccess',
@@ -30,6 +33,7 @@ return array(
         'Category\Controller\Category-create',
         'User\Controller\User-update',
         'Category\Controller\Category-update',
+        'Category\Controller\Category-delete',
         'Category\Controller\Item-create',
         'Category\Controller\Item-update',
         'Category\Controller\Cart-create',
