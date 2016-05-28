@@ -45,7 +45,7 @@ class Base
      * Convert the object to an array.
      * @return array
     */
-    public function toArray() {
+    public function toArray($depth = 0) {
         $vars = get_object_vars($this);
         unset(
             $vars['rawdata'], 
@@ -54,9 +54,33 @@ class Base
             $vars['__cloner__'], 
             $vars['__isInitialized__']
         );
-        foreach($vars as $key =>$val){
-            if(is_object($val))
-                $vars[$key] = $val->toArray();
+
+        $collectionClass = 'Doctrine\ORM\PersistentCollection';
+        if($depth <= 1) {
+            foreach($vars as $key =>$val){
+                if($key == 'password') {
+                    unset($vars['password']);
+                }
+                if($val instanceOf $collectionClass){
+                    $collection = array();
+                    foreach($val as $item){
+                        $depth = 1;
+                        array_push($collection, $item->toArray($depth++));
+                    }
+                    $vars[$key] = $collection;
+                }else if(is_object($val)){
+                    if ($val instanceof \DateTime) {
+                        $vars[$key] = $val;
+                    } else {
+                        $vars[$key] = $val->toArray($depth++);
+                        if($key == 'user') {
+                            if(isset($vars[$key]['password'])) {
+                                unset($vars[$key]['password']);    
+                            }
+                        }
+                    }
+                }
+            }
         }
         return $vars;
     }

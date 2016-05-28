@@ -26,19 +26,29 @@ class UserController extends AbstractRestfulJsonController{
 	
     public function getList(){   
         // Action used for GET requests without resource Id
-        $users = $this->getEntityManager()->getRepository('User\Entity\User')->findAll();
-        $users = array_map(function($user){
-            return $user->toArray();
-        }, $users);
-        return new JsonModel($users);
+        if($this->identity()->getRole() != 'user') {
+            $users = $this->getEntityManager()->getRepository('User\Entity\User')->findAll();
+            $users = array_map(function($user){
+                return $user->toArray();
+            }, $users);
+            $this->getResponse()->setStatusCode(200);
+            return new JsonModel($users);
+        }
+        $this->getResponse()->setStatusCode(401);
+        return new JsonModel(array('status'=> 'error','data'=>"Unautorized access/not a valid user"));
     }
 
     public function get($id){   
         // Action used for GET requests with resource Id
-        $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
-        return new JsonModel(
-    		$user->toArray()
-    	);
+        if($this->identity()->getRole() != 'user' || $this->identity()->getId() == $id) {
+            $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($id);
+            $this->getResponse()->setStatusCode(200);
+            return new JsonModel(
+        		$user->toArray()
+        	);
+        } 
+         $this->getResponse()->setStatusCode(401);
+         return new JsonModel(array('status'=> 'error','data'=>"Unautorized access/not a valid user"));
     }
 
     public function getMyUsersAction(){
