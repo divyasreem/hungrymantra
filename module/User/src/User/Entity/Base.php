@@ -59,7 +59,7 @@ class Base
         if($depth <= 1) {
             foreach($vars as $key =>$val){
                 if($key == 'password') {
-                    unset($vars['password']);
+                    // unset($vars['password']);
                 }
                 if($val instanceOf $collectionClass){
                     $collection = array();

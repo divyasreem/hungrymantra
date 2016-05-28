@@ -68,17 +68,25 @@ class ItemController extends AbstractRestfulJsonController{
 
     public function update($id, $data){
         // Action used for PUT requests
-        $item = $this->getEntityManager()->getRepository('Category\Entity\Item')->find($id);
-        $item->set($data);
-        $item->validate($this->em);
-        
-        $this->getEntityManager()->flush();
+        if(!empty($id) && !empty($data)) {
+            $item = $this->getEntityManager()->getRepository('Category\Entity\Item')->find($id);
+            if(empty($item)) {
+                $this->getResponse()->setStatusCode(400);
+                return new JsonModel(array("status" => "error", "data" => "Category item not found"));
+            }
+            $item->set($data);
+            $item->validate($this->em);
+            
+            $this->getEntityManager()->flush();
 
-        if(!empty($data['image'])) {
-            $res = $this->uploadImage($data, $item);
+            if(!empty($data['image'])) {
+                $res = $this->uploadImage($data, $item);
+            }
+            
+            return new JsonModel($item->toArray());
         }
-        
-        return new JsonModel($item->toArray());
+        $this->getResponse()->setStatusCode(400);
+        return new JsonModel(array("status" => "error", "data" => "post data is required"));
     }
 
     public function delete($id){
