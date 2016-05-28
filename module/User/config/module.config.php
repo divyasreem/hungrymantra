@@ -72,6 +72,17 @@ return array(
                     ),
                 ),
             ),
+            'WalletRecharge'=> array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/wallerRecharge',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'User\Controller',
+                        'controller'    => 'User',
+                        'action'        => 'walletRecharge',
+                    ),
+                ),
+            ),
         ),
     ),
     'controllers' => array(

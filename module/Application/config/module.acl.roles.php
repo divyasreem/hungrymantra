@@ -44,6 +44,7 @@ return array(
         'Category\Controller\Cart-getSavedItemsLoggedUser',
         'Category\Controller\Cart-deleteAllCartItems',
         'Category\Controller\Transaction-getOrdersInprogress',
-        'Category\Controller\Transaction-getOrders'
+        'Category\Controller\Transaction-getOrders',
+        'User\Controller\User-walletRecharge'
     )
 );

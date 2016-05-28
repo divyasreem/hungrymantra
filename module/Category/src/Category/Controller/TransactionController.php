@@ -59,7 +59,7 @@ class TransactionController extends AbstractRestfulJsonController{
             $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($data['user_id']);
             $transaction->setUser($user);
             $transaction->setAmount($data['amount']);
-            $transaction->validate($this->em);
+            // $transaction->validate($this->em);
             $this->getEntityManager()->persist($transaction);
             $this->getEntityManager()->flush();
             $data['wallet_amount'] = $user->getWalletAmount() + $data['amount'];
@@ -67,8 +67,9 @@ class TransactionController extends AbstractRestfulJsonController{
         }
         $helper = $this->CommonHelper();
         $helper->updateUser($user_id, $data);
+        $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($user_id);
 
-        return new JsonModel($transaction->toArray());
+        return new JsonModel($user->toArray());
     }
 
     public function update($id, $data){
