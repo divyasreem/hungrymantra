@@ -34,7 +34,7 @@ class CategoryController extends AbstractRestfulJsonController{
         if(!empty($id)) {
             $category = $this->getEntityManager()->getRepository('Category\Entity\Category')->find($id);
             if(empty($category)) {
-                $this->getResponse()->setStatusCode(404);
+                $this->getResponse()->setStatusCode(400);
                 return new JsonModel(array("status" => "error", "data" => "Category not found"));
             }
             $this->getResponse()->setStatusCode(200);
@@ -62,7 +62,7 @@ class CategoryController extends AbstractRestfulJsonController{
         if(!empty($id) && !empty($data)) {
             $category = $this->getEntityManager()->getRepository('Category\Entity\Category')->find($id);
             if(empty($id)) {
-                $this->getResponse()->setStatusCode(404);
+                $this->getResponse()->setStatusCode(400);
                 return new JsonModel(array("status" => "error", "data" => "Category not found"));
             }
             $category->set($data);
@@ -81,7 +81,7 @@ class CategoryController extends AbstractRestfulJsonController{
         if(!empty($id) && $this->identity()->getRole() != 'user') {
             $category = $this->getEntityManager()->getRepository('Category\Entity\Category')->find($id);
             if(empty($category)) {
-                $this->getResponse()->setStatusCode(404);
+                $this->getResponse()->setStatusCode(400);
                 return new JsonModel(array("status" => "error", "data" => "Category not found"));
             }
             $this->getEntityManager()->remove($category);

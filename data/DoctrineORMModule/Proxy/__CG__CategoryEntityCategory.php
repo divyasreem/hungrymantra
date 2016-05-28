@@ -220,12 +220,12 @@ class Category extends \Category\Entity\Category implements \Doctrine\ORM\Proxy\
     /**
      * {@inheritDoc}
      */
-    public function toArray()
+    public function toArray($depth = 0)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toArray', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'toArray', array($depth));
 
-        return parent::toArray();
+        return parent::toArray($depth);
     }
 
     /**

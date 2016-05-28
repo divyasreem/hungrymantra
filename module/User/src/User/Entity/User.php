@@ -114,9 +114,7 @@ class User extends Base
                     array(
                         'name'    => 'StringLength',
                         'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 5,
-                            'max'      => 100,
+                            'encoding' => 'UTF-8'
                         ),
                     ),
                 ),
@@ -133,9 +131,7 @@ class User extends Base
                     array(
                         'name'    => 'StringLength',
                         'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
+                            'encoding' => 'UTF-8'
                         ),
                     ),
                 ),
@@ -152,9 +148,7 @@ class User extends Base
                     array(
                         'name'    => 'StringLength',
                         'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min'      => 1,
-                            'max'      => 100,
+                            'encoding' => 'UTF-8'
                         ),
                     ),
                 ),

@@ -31,31 +31,39 @@ class ItemController extends AbstractRestfulJsonController{
 
     public function get($id){   
         // Action used for GET requests with resource Id
-        $item = $this->getEntityManager()->getRepository('Category\Entity\Item')->find($id);
-        if(!empty($item)) {
+        if(!empty($id)) {
+            $item = $this->getEntityManager()->getRepository('Category\Entity\Item')->find($id);
+            if(empty($item)) {
+                $this->getResponse()->setStatusCode(400);
+                return new JsonModel(array("status" => "error", "data" => "Category item not found"));
+            }
             return new JsonModel(
                 $item->toArray()
             );
         }
         $this->getResponse()->setStatusCode(400);
-        return new JsonModel();
+        return new JsonModel(array("status" => "error", "data" => "Id is required"));
     }
 
     public function create($data){
-        $this->getEntityManager();
-        $item = new \Category\Entity\Item($data);
-        $category = $this->getEntityManager()->getRepository('Category\Entity\Category')->find($data['category_id']);
-        $item->setCategory($category);
-        $item->validate($this->em);
-        
-        $this->getEntityManager()->persist($item);
-        $this->getEntityManager()->flush();
+        if(!empty($data)) {
+            $this->getEntityManager();
+            $item = new \Category\Entity\Item($data);
+            $category = $this->getEntityManager()->getRepository('Category\Entity\Category')->find($data['category_id']);
+            $item->setCategory($category);
+            $item->validate($this->em);
+            
+            $this->getEntityManager()->persist($item);
+            $this->getEntityManager()->flush();
 
-        if(!empty($data['image'])) {
-            $res = $this->uploadImage($data, $item);
+            if(!empty($data['image'])) {
+                $res = $this->uploadImage($data, $item);
+            }
+            
+            return new JsonModel($item->toArray());
         }
-        
-        return new JsonModel($item->toArray());
+        $this->getResponse()->setStatusCode(400);
+        return new JsonModel(array("status" => "error", "data" => "post data is required"));
     }
 
     public function update($id, $data){
