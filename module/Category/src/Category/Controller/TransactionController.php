@@ -42,7 +42,7 @@ class TransactionController extends AbstractRestfulJsonController{
         $transaction->setCreatedDate(date("Y-m-d"));
         $transaction->setSource($data['source']);
         if($data['source'] == 'order') {
-            print_r($data);
+            // print_r($data);
             $order = $this->calculateOrderAmount();
             if($order['total_amount'] > $this->identity()->getWalletAmount()) {
                 return new JsonModel(array('status'=> 'ok','data' => 'Please recharge your wallet to place an order'));
@@ -69,7 +69,7 @@ class TransactionController extends AbstractRestfulJsonController{
         $helper->updateUser($user_id, $data);
         $user = $this->getEntityManager()->getRepository('User\Entity\User')->find($user_id);
         $this->getResponse()->setStatusCode(200);
-        return new JsonModel($user->toArray());
+        return new JsonModel(array("status" => "ok", "data" => $user->toArray()));
     }
 
     public function update($id, $data){
